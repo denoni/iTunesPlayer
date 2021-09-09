@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  iTunesView.swift
 //  iTunesPlayer
 //
 //  Created by Gabriel on 9/8/21.
@@ -10,9 +10,8 @@ import SwiftUI
 import SwiftUI
 
 struct ContentView: View {
+  @StateObject private var viewModel = APIViewModel()
   @State private var artistNameInput = ""
-
-  var dummyData = ["Josh", "Bob", "Charlie", "Sam", "Tod"]
 
   var body: some View {
     ZStack {
@@ -23,7 +22,7 @@ struct ContentView: View {
       HStack(spacing: 15) {
         TextField("Song name...", text: $artistNameInput)
           .textFieldStyle(RoundedBorderTextFieldStyle())
-        Button(action: { print("Tapped search button") }) {
+        Button(action: { viewModel.loadData(artistName: artistNameInput) }) {
           Text("Search")
             .frame(width: 70, height: 30)
             .foregroundColor(.black)
@@ -33,23 +32,26 @@ struct ContentView: View {
       }.padding()
     }
 
-
     Spacer()
 
-    List(dummyData, id: \.self) { item in
+    List(viewModel.results, id: \.trackId) { item in
       ZStack {
         Color.white.opacity(0.08)
           .mask(RoundedRectangle(cornerRadius: 15))
         HStack(spacing: 0) {
+
           VStack(alignment: .leading) {
-            Text(item)
+            Text(item.trackName)
               .font(.headline)
               .lineLimit(2)
-            Text("Namerino")
+            Text(item.artistName)
+              .font(.subheadline)
               .opacity(0.6)
               .lineLimit(1)
           }
+
           Spacer()
+
           VStack {
             Button(action: { print("Tapped play button") }) {
               Image(systemName: "play.circle.fill")
@@ -65,20 +67,28 @@ struct ContentView: View {
                 .frame(width: 25)
             }
           }.buttonStyle(PlainButtonStyle())
-
           .padding(.horizontal, 10)
+
           ZStack {
             RoundedRectangle(cornerRadius: 15)
-              .foregroundColor(Color.black.opacity(0.6))
-          }
+              .fill(Color.black.opacity(0.6))
+              .overlay(Image(systemName: "music.mic")
+                        .resizable()
+                        .aspectRatio(1/1, contentMode: .fit)
+                        .foregroundColor(.white)
+                        .opacity(0.05)
+                        .padding(25))
           .aspectRatio(1/1, contentMode: .fit)
           .frame(width: 100)
+          .mask(RoundedRectangle(cornerRadius: 15))
+          }
 
         }.padding()
       }
     }
   }
 }
+
 
 
 
