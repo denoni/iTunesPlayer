@@ -35,16 +35,20 @@ struct ContentView: View {
     Spacer()
 
     List(viewModel.results, id: \.trackId) { item in
+      let trackTitle = item.trackName
+      let artistName = item.artistName
+      let coverImageURL = item.artworkUrl100
+
       ZStack {
         Color.white.opacity(0.08)
           .mask(RoundedRectangle(cornerRadius: 15))
         HStack(spacing: 0) {
 
           VStack(alignment: .leading) {
-            Text(item.trackName)
+            Text(trackTitle)
               .font(.headline)
               .lineLimit(2)
-            Text(item.artistName)
+            Text(artistName)
               .font(.subheadline)
               .opacity(0.6)
               .lineLimit(1)
@@ -72,20 +76,18 @@ struct ContentView: View {
           ZStack {
             RoundedRectangle(cornerRadius: 15)
               .fill(Color.black.opacity(0.6))
-              .overlay(Image(systemName: "music.mic")
-                        .resizable()
-                        .aspectRatio(1/1, contentMode: .fit)
-                        .foregroundColor(.white)
-                        .opacity(0.05)
-                        .padding(25))
+
+            RemoteImage(url: coverImageURL)
+              .mask(RoundedRectangle(cornerRadius: 15))
+          }
           .aspectRatio(1/1, contentMode: .fit)
           .frame(width: 100)
           .mask(RoundedRectangle(cornerRadius: 15))
-          }
 
         }.padding()
       }
     }
+
   }
 }
 
