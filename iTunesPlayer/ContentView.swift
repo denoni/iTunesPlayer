@@ -15,10 +15,24 @@ struct ContentView: View {
   var dummyData = ["Josh", "Bob", "Charlie", "Sam", "Tod"]
 
   var body: some View {
-    HStack(spacing: 15) {
-      TextField("Song name...", text: $artistNameInput)
-        .textFieldStyle(RoundedBorderTextFieldStyle())
-    }.padding()
+    ZStack {
+      Rectangle()
+        .fill(Color(#colorLiteral(red: 0.1350227125, green: 0.1350227125, blue: 0.1350227125, alpha: 1)))
+        .ignoresSafeArea()
+        .frame(height: 80)
+      HStack(spacing: 15) {
+        TextField("Song name...", text: $artistNameInput)
+          .textFieldStyle(RoundedBorderTextFieldStyle())
+        Button(action: { print("Tapped search button") }) {
+          Text("Search")
+            .frame(width: 70, height: 30)
+            .foregroundColor(.black)
+            .background(Color.white.opacity(0.9))
+            .clipShape(RoundedRectangle(cornerRadius: 5))
+        }
+      }.padding()
+    }
+
 
     Spacer()
 
@@ -36,6 +50,21 @@ struct ContentView: View {
               .lineLimit(1)
           }
           Spacer()
+          VStack {
+            Button(action: { print("Tapped play button") }) {
+              Image(systemName: "play.circle.fill")
+                .resizable()
+                .aspectRatio(1/1, contentMode: .fit)
+                .frame(width: 25)
+                .scaleEffect()
+            }
+            Button(action: { print("Tapped pause button") }) {
+              Image(systemName: "pause.circle.fill")
+                .resizable()
+                .aspectRatio(1/1, contentMode: .fit)
+                .frame(width: 25)
+            }
+          }.buttonStyle(PlainButtonStyle())
 
           .padding(.horizontal, 10)
           ZStack {
