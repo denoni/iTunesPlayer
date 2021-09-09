@@ -11,7 +11,9 @@ import SwiftUI
 
 struct ContentView: View {
   @StateObject private var viewModel = APIViewModel()
+  @State var audioPlayer = RemoteAudio()
   @State private var artistNameInput = ""
+
 
   var body: some View {
     ZStack {
@@ -57,14 +59,14 @@ struct ContentView: View {
           Spacer()
 
           VStack {
-            Button(action: { print("Tapped play button") }) {
+            Button(action: { audioPlayer.play(item.previewUrl) }) {
               Image(systemName: "play.circle.fill")
                 .resizable()
                 .aspectRatio(1/1, contentMode: .fit)
                 .frame(width: 25)
                 .scaleEffect()
             }
-            Button(action: { print("Tapped pause button") }) {
+            Button(action: { audioPlayer.pause() }) {
               Image(systemName: "pause.circle.fill")
                 .resizable()
                 .aspectRatio(1/1, contentMode: .fit)

@@ -53,4 +53,5 @@ struct Result: Codable {
   let artistName: String
 
   let artworkUrl100: String
+  let previewUrl: String
 }
