@@ -9,8 +9,10 @@ import SwiftUI
 
 class APIViewModel: ObservableObject {
   @Published var results = [Result]()
+  @Published var isLoading = false
 
   func loadData(artistName: String) {
+    isLoading = true
     let artistNameFormatted = artistName.replacingOccurrences(of: " ", with: "+")
 
     // URL
@@ -28,6 +30,7 @@ class APIViewModel: ObservableObject {
         if let decodedResponse = try? JSONDecoder().decode(Response.self, from: data) {
           DispatchQueue.main.async {
             self.results = decodedResponse.results
+            self.isLoading = false
           }
 
           return
@@ -38,7 +41,6 @@ class APIViewModel: ObservableObject {
     }
     // Fire off the dataTask
     .resume()
-
   }
 
 }
